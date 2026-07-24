@@ -25,7 +25,13 @@ make install
 make verify-all
 ```
 
-`verify-all` runs MLFS tests, LLM-eval smoke, and the VAD **FULL_PASS** acceptance gate.
+`verify-all` runs MLFS tests, LLM-eval smoke, and the VAD **FULL_PASS** acceptance gate (always stub / offline).
+
+Optional live LLM eval (not part of CI):
+
+```bash
+EVAL_LIVE=1 OPENAI_API_KEY=... make lab-llm-eval-live
+```
 
 ---
 
@@ -95,9 +101,12 @@ make verify-vad-pass
 make run-vad-ui
 ```
 
+Experimental neural / energy VAD A/B (`--backend neural|compare`) is available for local comparison; **WebRTC aggressiveness 2 remains the FULL_PASS gate** (`challenge_pass.py` unchanged).
+
+
 ### 3) LLM Evaluation Lab
 
-Offline-first (stub generators without API keys): TF-IDF → BM25 fusion → faithfulness / hallucination → prompt A/B → latency & $/1k → multi-model matrix.
+Offline-first (stub generators without API keys): TF-IDF → BM25 fusion → faithfulness / hallucination → prompt A/B → latency & $/1k → multi-model matrix. Optional live path: `EVAL_LIVE=1` + provider keys (`make lab-llm-eval-live`). Gold: 40 QA + 15 adversarial — see [`labs/llm-eval/DATA_CARD.md`](labs/llm-eval/DATA_CARD.md).
 
 ```bash
 make lab-llm-eval-test

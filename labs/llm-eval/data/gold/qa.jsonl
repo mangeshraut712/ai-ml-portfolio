@@ -18,3 +18,23 @@
 {"id": "q18", "question": "Which two production KPIs should RAG reports include besides quality?", "answer": "Latency percentiles and cost per 1000 queries.", "relevant_doc_ids": ["doc_8"]}
 {"id": "q19", "question": "What similarity function is common for dense embeddings?", "answer": "Cosine similarity.", "relevant_doc_ids": ["doc_5"]}
 {"id": "q20", "question": "List classical ML topics for LLM interview pivots.", "answer": "Gradient descent, regularization, bias-variance, ROC-AUC, tree ensembles.", "relevant_doc_ids": ["doc_9"]}
+{"id": "q21", "question": "What product areas does Sarvam cover besides generative text?", "answer": "Speech recognition, text-to-speech, and translation for Indic scripts.", "relevant_doc_ids": ["doc_0"]}
+{"id": "q22", "question": "What is Saaras?", "answer": "Sarvam's speech-to-text offering for low-latency Indic transcription.", "relevant_doc_ids": ["doc_2"]}
+{"id": "q23", "question": "Why is code-mixing a challenge for Indic evaluation?", "answer": "Mixed-language utterances break English-only metrics; report per-language scores.", "relevant_doc_ids": ["doc_3"]}
+{"id": "q24", "question": "What does faithfulness measure in RAG?", "answer": "Whether generated answer claims are supported by retrieved context.", "relevant_doc_ids": ["doc_4"]}
+{"id": "q25", "question": "How should embedding models be benchmarked?", "answer": "With retrieval metrics on a fixed gold query set.", "relevant_doc_ids": ["doc_5"]}
+{"id": "q26", "question": "What is a first-stage retriever's job?", "answer": "Return top-k candidates cheaply before optional reranking.", "relevant_doc_ids": ["doc_6"]}
+{"id": "q27", "question": "How do adversarial RAG evals probe hallucination?", "answer": "They use unanswerable questions; a faithful system should abstain.", "relevant_doc_ids": ["doc_7"]}
+{"id": "q28", "question": "How is cost per 1000 queries estimated?", "answer": "Using token pricing tables times measured input/output usage.", "relevant_doc_ids": ["doc_8"]}
+{"id": "q29", "question": "Why does bias-variance still matter when interviewing for LLM roles?", "answer": "Classical ML foundations remain required for applied AI pivots.", "relevant_doc_ids": ["doc_9"]}
+{"id": "q30", "question": "What makes Bulbul voices controllable?", "answer": "Separating content from speaker and style in latent space.", "relevant_doc_ids": ["doc_1"]}
+{"id": "q31", "question": "Name three Indic script challenges mentioned for multilingual NLP.", "answer": "Code-mixing, dialect variation, and script diversity.", "relevant_doc_ids": ["doc_3"]}
+{"id": "q32", "question": "What should you prefer when evidence is missing in RAG?", "answer": "Saying I don't know rather than inventing facts.", "relevant_doc_ids": ["doc_4", "doc_7"]}
+{"id": "q33", "question": "Which STT product targets Indian languages and dialects?", "answer": "Saaras.", "relevant_doc_ids": ["doc_2"]}
+{"id": "q34", "question": "What scoring function pairs with dense semantic search?", "answer": "Cosine similarity.", "relevant_doc_ids": ["doc_5"]}
+{"id": "q35", "question": "What does MRR stand for in retrieval evaluation?", "answer": "Mean reciprocal rank of the first relevant hit.", "relevant_doc_ids": ["doc_4"]}
+{"id": "q36", "question": "When would you choose a cross-encoder reranker?", "answer": "To reorder first-stage hits and improve precision at small k.", "relevant_doc_ids": ["doc_6"]}
+{"id": "q37", "question": "What latency percentiles should production RAG report?", "answer": "p50 and p95 latency.", "relevant_doc_ids": ["doc_8"]}
+{"id": "q38", "question": "Is Sarvam positioned as India-first or English-only?", "answer": "India-first sovereign AI focused on multilingual Indic models.", "relevant_doc_ids": ["doc_0"]}
+{"id": "q39", "question": "What TTS family uses latent decomposition at Sarvam?", "answer": "Bulbul.", "relevant_doc_ids": ["doc_1"]}
+{"id": "q40", "question": "Which classical metrics appear alongside trees in interview pivots?", "answer": "ROC-AUC along with gradient descent, regularization, and bias-variance.", "relevant_doc_ids": ["doc_9"]}

@@ -126,3 +126,22 @@ def test_ground_truth_manifest_valid():
     assert manifest["n_sample_soft"] >= 50
     for rec in manifest["records"][:3]:
         assert len(rec["flags"]) == rec["n_frames"]
+
+
+def test_neural_vad_interface_matches_webrtc_grid():
+    """Neural stub must classify the same frame grid as WebRTC (A/B-safe)."""
+    from neural_vad import NeuralVADEngine
+    from vad_engine import WebRTCVADEngine
+
+    rng = np.random.default_rng(0)
+    sr = 16000
+    audio = rng.normal(0, 0.05, sr).astype(np.float32)
+    # Add a loud mid segment to look like speech energy
+    audio[sr // 3 : 2 * sr // 3] *= 8
+
+    neural = NeuralVADEngine(aggressiveness=2)
+    webrtc = WebRTCVADEngine(aggressiveness=2)
+    n_flags = neural.detect_speech(audio, sr, frame_duration_ms=30, hangover=True)
+    w_flags = webrtc.detect_speech(audio, sr, frame_duration_ms=30, hangover=True)
+    assert len(n_flags) == len(w_flags)
+    assert n_flags.dtype == np.int8 or n_flags.dtype == w_flags.dtype

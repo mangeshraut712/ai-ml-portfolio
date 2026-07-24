@@ -49,7 +49,9 @@ jobs:
       - name: VAD unit tests
         run: python -m pytest labs/vad/test_vad_pipeline.py -q
 
-      - name: LLM eval tests + smoke
+      - name: LLM eval tests + smoke (stub only)
+        env:
+          EVAL_LIVE: "0"
         run: |
           python -m pytest labs/llm-eval/tests -q
           python labs/llm-eval/src/run_lab.py

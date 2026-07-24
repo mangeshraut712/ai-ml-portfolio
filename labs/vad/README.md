@@ -27,7 +27,7 @@ raw audio → STFT spectral gate → 16-bit PCM frames → WebRTC GMM → speech
 ## Project Layout
 
 ```text
-examples/sarvam-vad-challenge/
+labs/vad/
 ├── denoiser.py                 # Spectral gating
 ├── vad_engine.py               # WebRTC GMM VAD
 ├── postprocess.py              # Hangover / gap-fill
@@ -59,7 +59,7 @@ make install
 .venv/bin/pip install webrtcvad librosa soundfile huggingface_hub
 
 # Download ~50 evaluation WAVs (16 kHz mono PCM)
-.venv/bin/python examples/sarvam-vad-challenge/fetch_samples.py
+.venv/bin/python labs/vad/fetch_samples.py
 
 # Run on one file
 make verify-vad-challenge
@@ -70,14 +70,14 @@ make verify-vad-batch
 # Interactive Streamlit UI
 make run-vad-ui
 # or:
-.venv/bin/python examples/sarvam-vad-challenge/main.py \
+.venv/bin/python labs/vad/main.py \
   sample_data/sample_audio/sample_001.wav
 ```
 
 ### CLI options
 
 ```bash
-.venv/bin/python examples/sarvam-vad-challenge/main.py path/to/audio.wav \
+.venv/bin/python labs/vad/main.py path/to/audio.wav \
   --aggressiveness 3 \
   --frame-ms 30 \
   --json
@@ -122,6 +122,33 @@ make verify-vad-pass    # single acceptance gate → FULL_PASS / FAIL
 Details: [`CHALLENGE_CHECK.md`](./CHALLENGE_CHECK.md).
 
 The tuned baseline uses `aggressiveness=2` with hangover smoothing.
+
+
+
+## Neural VAD A/B (experimental)
+
+An energy / optional-ONNX stub (`neural_vad.py`) implements the same interface as
+WebRTC for local A/B comparison. **It is not part of the FULL_PASS gate.**
+
+| Backend | Status |
+|---|---|
+| `webrtc` (default) | **FULL_PASS** — `challenge_pass.py` / `make verify-vad-pass` |
+| `neural` | Experimental energy gate (+ ONNX if model + `onnxruntime` present) |
+| `compare` | Side-by-side speech % + frame agreement |
+
+```bash
+# WebRTC (acceptance path)
+.venv/bin/python labs/vad/main.py sample_data/sample_audio/sample_001.wav
+
+# Neural stub
+.venv/bin/python labs/vad/main.py sample_data/sample_audio/sample_001.wav --backend neural
+
+# A/B
+.venv/bin/python labs/vad/main.py sample_data/sample_audio/sample_001.wav --backend compare
+.venv/bin/python labs/vad/ab_compare.py sample_data/sample_audio/sample_001.wav
+```
+
+Do not change `challenge_pass.py` aggressiveness away from WebRTC **2** for gated runs.
 
 ## Scalability and Future Roadmap
 

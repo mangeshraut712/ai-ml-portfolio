@@ -1,4 +1,4 @@
-.PHONY: help install test test-mlfs demo verify-vad-pass lab-llm-eval lab-llm-eval-test verify-all fetch-vad-samples run-vad-ui run-llm-eval-ui
+.PHONY: help install test test-mlfs demo verify-vad-pass lab-llm-eval lab-llm-eval-live lab-llm-eval-test verify-all fetch-vad-samples run-vad-ui run-llm-eval-ui
 
 VENV ?= .venv
 PY := $(VENV)/bin/python
@@ -10,6 +10,7 @@ help:
 	@echo "  make demo              - MLFS demos (bias-variance, ROC, …)"
 	@echo "  make verify-vad-pass   - VAD challenge FULL_PASS gate"
 	@echo "  make lab-llm-eval      - offline RAG / LLM evaluation lab"
+	@echo "  make lab-llm-eval-live - optional live providers (EVAL_LIVE=1)"
 	@echo "  make lab-llm-eval-test - LLM eval smoke tests"
 	@echo "  make verify-all        - mlfs + vad + llm-eval (CI-equivalent)"
 	@echo "  make fetch-vad-samples - re-download 50× 16 kHz WAVs"
@@ -39,6 +40,10 @@ verify-vad-pass:
 
 lab-llm-eval:
 	$(PY) labs/llm-eval/src/run_lab.py
+
+# Optional: real providers when keys are present. CI must use lab-llm-eval (stub).
+lab-llm-eval-live:
+	EVAL_LIVE=1 $(PY) labs/llm-eval/src/run_lab.py
 
 lab-llm-eval-test:
 	$(PY) -m pytest labs/llm-eval/tests -q

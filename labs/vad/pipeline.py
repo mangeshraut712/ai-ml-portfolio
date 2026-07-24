@@ -36,9 +36,23 @@ class VADResult:
 class VADPipeline:
     """Two-stage speech segregation: spectral gating → GMM VAD → hangover."""
 
-    def __init__(self, aggressiveness: int = 2, sr: int = 16000):
+    def __init__(
+        self,
+        aggressiveness: int = 2,
+        sr: int = 16000,
+        vad_engine=None,
+        backend: str = "webrtc",
+    ):
         self.denoiser = AudioDenoiser(sr=sr)
-        self.vad_engine = WebRTCVADEngine(aggressiveness=aggressiveness)
+        self.backend = backend
+        if vad_engine is not None:
+            self.vad_engine = vad_engine
+        elif backend == "neural":
+            from neural_vad import NeuralVADEngine
+
+            self.vad_engine = NeuralVADEngine(aggressiveness=aggressiveness)
+        else:
+            self.vad_engine = WebRTCVADEngine(aggressiveness=aggressiveness)
         self.sr = sr
 
     def process_array(

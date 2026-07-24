@@ -18,7 +18,7 @@ from pipeline import VADPipeline  # noqa: E402
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Run Denoiser + WebRTC (GMM) Voice Activity Detection."
+        description="Run Denoiser + VAD (WebRTC GMM default; neural experimental A/B)."
     )
     parser.add_argument(
         "audio_file",
@@ -30,7 +30,7 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=2,
         choices=[0, 1, 2, 3],
-        help="WebRTC VAD aggressiveness (0=lax, 3=strict). Default: 2",
+        help="VAD aggressiveness (0=lax, 3=strict). Default: 2",
     )
     parser.add_argument(
         "--frame-ms",
@@ -45,6 +45,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Skip spectral gating and run VAD on raw audio.",
     )
     parser.add_argument(
+        "--backend",
+        choices=["webrtc", "neural", "compare"],
+        default="webrtc",
+        help="VAD backend. webrtc=FULL_PASS gate; neural=experimental; compare=A/B.",
+    )
+    parser.add_argument(
         "--json",
         action="store_true",
         help="Emit machine-readable JSON instead of human text.",
@@ -52,32 +58,22 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main() -> int:
-    args = build_parser().parse_args()
-    audio_file = args.audio_file
-
-    if not audio_file.exists():
-        print(f"Error: File {audio_file} not found.", file=sys.stderr)
-        return 1
-
-    print(f"[*] Processing: {audio_file}...", file=sys.stderr)
-    pipeline = VADPipeline(aggressiveness=args.aggressiveness)
+def _run_one(args, backend: str) -> dict:
+    pipeline = VADPipeline(aggressiveness=args.aggressiveness, backend=backend)
     result = pipeline.process_file(
-        str(audio_file),
+        str(args.audio_file),
         frame_duration_ms=args.frame_ms,
         denoise=not args.no_denoise,
     )
-
     total_frames = len(result.speech_flags)
     speech_frames = int(result.speech_flags.sum())
-    speech_pct = result.speech_ratio * 100
-
-    payload = {
-        "file": str(audio_file),
+    return {
+        "backend": backend,
+        "file": str(args.audio_file),
         "sample_rate": result.sample_rate,
         "total_frames": total_frames,
         "speech_frames": speech_frames,
-        "speech_percentage": round(speech_pct, 2),
+        "speech_percentage": round(result.speech_ratio * 100, 2),
         "expected_frames": result.expected_frames,
         "frames_classified": result.frames_classified,
         "frame_complete": result.frame_complete,
@@ -88,24 +84,76 @@ def main() -> int:
         ],
     }
 
+
+def main() -> int:
+    args = build_parser().parse_args()
+    audio_file = args.audio_file
+
+    if not audio_file.exists():
+        print(f"Error: File {audio_file} not found.", file=sys.stderr)
+        return 1
+
+    print(f"[*] Processing: {audio_file} (backend={args.backend})...", file=sys.stderr)
+
+    if args.backend == "compare":
+        payloads = {
+            "webrtc": _run_one(args, "webrtc"),
+            "neural": _run_one(args, "neural"),
+        }
+        # Frame agreement for quick A/B
+        from pipeline import VADPipeline
+
+        w = VADPipeline(aggressiveness=args.aggressiveness, backend="webrtc")
+        n = VADPipeline(aggressiveness=args.aggressiveness, backend="neural")
+        wr = w.process_file(
+            str(audio_file),
+            frame_duration_ms=args.frame_ms,
+            denoise=not args.no_denoise,
+        )
+        nr = n.process_file(
+            str(audio_file),
+            frame_duration_ms=args.frame_ms,
+            denoise=not args.no_denoise,
+        )
+        n_frames = min(len(wr.speech_flags), len(nr.speech_flags))
+        agree = (
+            float((wr.speech_flags[:n_frames] == nr.speech_flags[:n_frames]).mean())
+            if n_frames
+            else 0.0
+        )
+        payloads["frame_agreement"] = round(agree, 4)
+        payloads["note"] = (
+            "neural is experimental A/B; WebRTC aggressiveness=2 remains FULL_PASS"
+        )
+        if args.json:
+            print(json.dumps(payloads, indent=2))
+        else:
+            print(
+                f"[+] WebRTC speech: {payloads['webrtc']['speech_percentage']:.2f}% | "
+                f"Neural speech: {payloads['neural']['speech_percentage']:.2f}% | "
+                f"frame agreement: {agree:.3f}"
+            )
+        return 0
+
+    payload = _run_one(args, args.backend)
     if args.json:
         print(json.dumps(payload, indent=2))
     else:
         print(
-            f"[+] Done. Detected speech in {speech_pct:.2f}% "
-            f"of the audio timeline ({speech_frames}/{total_frames} frames)."
+            f"[+] Done ({args.backend}). Detected speech in "
+            f"{payload['speech_percentage']:.2f}% of the audio timeline "
+            f"({payload['speech_frames']}/{payload['total_frames']} frames)."
         )
-        if result.expected_frames:
+        if payload["expected_frames"]:
             print(
-                f"[+] Frame coverage: {result.frames_classified}/"
-                f"{result.expected_frames} "
-                f"({'complete' if result.frame_complete else 'INCOMPLETE'})"
+                f"[+] Frame coverage: {payload['frames_classified']}/"
+                f"{payload['expected_frames']} "
+                f"({'complete' if payload['frame_complete'] else 'INCOMPLETE'})"
             )
-        if result.speech_segments:
+        if payload["segments"]:
             print("[+] Speech segments (sec):")
-            for start, end in result.speech_segments:
-                print(f"    {start:.2f} → {end:.2f}")
-
+            for seg in payload["segments"]:
+                print(f"    {seg['start']:.2f} → {seg['end']:.2f}")
     return 0
 
 

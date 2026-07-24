@@ -8,12 +8,12 @@ faithfulness, hallucination traps, latency/cost, prompt A/B, and multi-model com
 ## Why this lives here
 
 Yes — this cookbook is a valid home. Keep product demos under `examples/` and put
-systematic evaluation under `lab/llm-eval/` so recruiters can find both:
+systematic evaluation under `labs/llm-eval/` so recruiters can find both:
 
 | Path | Story |
 |---|---|
 | `examples/` | Ship India-first apps |
-| `lab/llm-eval/` | Measure models like a research / applied-AI engineer |
+| `labs/llm-eval/` | Measure models like a research / applied-AI engineer |
 | `examples/sarvam-vad-challenge/` | Speech ML under interview constraints |
 
 Classical ML fundamentals live in this monorepo under [`mlfs/`](../../mlfs/).
@@ -40,7 +40,7 @@ This runs:
 ## Layout
 
 ```text
-lab/llm-eval/
+labs/llm-eval/
 ├── configs/models.yaml pricing.yaml experiments/
 ├── data/corpus/  data/gold/qa.jsonl  data/gold/adversarial.jsonl
 ├── src/          ingest retrieve rerank generate compare report + metrics/
@@ -70,3 +70,30 @@ OpenAI · Claude · Gemini · Qwen · Gemma · DeepSeek · Sarvam
 
 Runs offline with deterministic stub generators when `API` keys are absent so CI
 and local demos always work. Plug real keys via env vars to swap stubs for live calls.
+
+
+## Offline vs live providers
+
+| Mode | How | When |
+|---|---|---|
+| **Stub (default)** | Leave `EVAL_LIVE` unset | CI, local demos, `make lab-llm-eval` |
+| **Live** | `EVAL_LIVE=1` + API keys | Optional A/B against real models |
+
+```bash
+# Offline (CI-safe)
+make lab-llm-eval
+
+# Live (optional; skips providers whose keys are missing)
+export EVAL_LIVE=1
+export OPENAI_API_KEY=...          # optional
+export ANTHROPIC_API_KEY=...       # optional
+export GOOGLE_API_KEY=...          # optional
+export SARVAM_API_KEY=...          # optional
+make lab-llm-eval-live
+```
+
+Live calls use lightweight HTTP (`urllib`; optional `httpx` if installed). Provider
+failures fall back to stubs so the lab stays runnable. CI must **not** set
+`EVAL_LIVE`.
+
+Gold size and labeling: [`DATA_CARD.md`](./DATA_CARD.md) (40 QA + 15 adversarial).

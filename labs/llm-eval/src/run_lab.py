@@ -139,6 +139,7 @@ def main() -> int:
         latencies = []
         faith_scores = []
         f1_scores = []
+        modes = []
         in_tok = 0
         out_tok = 0
         t_batch = time.perf_counter()
@@ -160,6 +161,7 @@ def main() -> int:
             latencies.append(gen.latency_ms)
             faith_scores.append(faithfulness_score(gen.answer, contexts))
             f1_scores.append(token_f1(gen.answer, item["answer"]))
+            modes.append(gen.mode)
             in_tok += gen.prompt_tokens
             out_tok += gen.completion_tokens
         wall_ms = (time.perf_counter() - t_batch) * 1000
@@ -183,7 +185,7 @@ def main() -> int:
                 "batch_wall_ms": round(wall_ms, 2),
                 "est_cost_usd_for_gold_set": round(cost, 6),
                 "est_cost_usd_per_1k_queries": round(cost / n * 1000, 4),
-                "mode": "stub",
+                "mode": ("live" if modes and all(m == "live" for m in modes) else ("mixed" if any(m == "live" for m in modes) else "stub")),
             }
         )
 
@@ -197,7 +199,7 @@ def main() -> int:
         "hallucination_rate_adversarial": hallucination_rate,
         "model_comparison": comparison,
         "notes": [
-            "Offline stubs used by default (EVAL_LIVE=1 enables live hook point).",
+            "Offline stubs by default; set EVAL_LIVE=1 with provider API keys for live calls.",
             "TF-IDF is the local embedding baseline; swap for OpenAI/Sarvam embeddings later.",
             "BM25 fusion reranks first-stage hits.",
         ],
@@ -237,7 +239,7 @@ def main() -> int:
         "",
         f"## Hallucination rate (adversarial): {hallucination_rate:.3f}",
         "",
-        "## Model comparison (stub)",
+        "## Model comparison",
         "",
         "| Provider | F1 | Faithfulness | p95 ms | $/1k q |",
         "|---|---:|---:|---:|---:|",

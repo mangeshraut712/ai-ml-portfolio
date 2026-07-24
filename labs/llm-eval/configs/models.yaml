@@ -1,5 +1,12 @@
-# Model registry for comparison experiments
-# Live calls require corresponding env vars; otherwise offline stubs are used.
+# Provider matrix for the LLM Evaluation Lab.
+# Offline (default): deterministic stubs — CI-safe, no network.
+# Live: set EVAL_LIVE=1 and export the listed env keys; missing keys stay stub.
+
+live:
+  enabled_env: EVAL_LIVE  # must equal "1"
+  note: >
+    When EVAL_LIVE=1, generate.py calls real provider HTTP APIs for any
+    comparison_models entry whose env key is set. CI must leave EVAL_LIVE unset.
 
 providers:
   openai:
@@ -9,15 +16,16 @@ providers:
   anthropic:
     env: ANTHROPIC_API_KEY
     default_model: claude-3-5-haiku-latest
-    stub_style: careful
+    stub_style: concise
   google:
     env: GOOGLE_API_KEY
     default_model: gemini-2.0-flash
-    stub_style: structured
+    stub_style: concise
   qwen:
-    env: DASHSCOPE_API_KEY
+    env: OPENAI_API_KEY
     default_model: qwen-plus
-    stub_style: detailed
+    stub_style: analytical
+    note: Optional OpenAI-compatible via QWEN_BASE_URL
   gemma:
     env: GOOGLE_API_KEY
     default_model: gemma-2-9b-it
