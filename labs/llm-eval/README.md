@@ -16,9 +16,8 @@ systematic evaluation under `lab/llm-eval/` so recruiters can find both:
 | `lab/llm-eval/` | Measure models like a research / applied-AI engineer |
 | `examples/sarvam-vad-challenge/` | Speech ML under interview constraints |
 
-Classical ML fundamentals live in the sibling repo
-[`machine-learning-from-scratch`](https://github.com/mangeshraut712/machine-learning-from-scratch).
-Portfolio index: [`ai-ml-portfolio`](https://github.com/mangeshraut712/ai-ml-portfolio).
+Classical ML fundamentals live in this monorepo under [`mlfs/`](../../mlfs/).
+Sarvam product demos: [`sarvam-ai-cookbook`](https://github.com/mangeshraut712/sarvam-ai-cookbook).
 
 ## One-command demo (offline, no API keys)
 

@@ -119,11 +119,10 @@ GitHub Actions runs on Python **3.10 / 3.11 / 3.12**:
 
 ## Related repos
 
-| Repo | Keep? | Role |
-|---|---|---|
-| **This monorepo** | Yes | Interview-ready owned labs |
-| [`sarvam-ai-cookbook`](https://github.com/mangeshraut712/sarvam-ai-cookbook) | Yes (sibling) | Sarvam product demos / fork |
-| `machine-learning-from-scratch` | Archived after merge | Content lives in `mlfs/` here |
+| Repo | Role |
+|---|---|
+| **This monorepo** | Interview-ready owned labs (`mlfs/` · `labs/vad` · `labs/llm-eval`) |
+| [`sarvam-ai-cookbook`](https://github.com/mangeshraut712/sarvam-ai-cookbook) | Sibling fork — Sarvam product demos / Next.js showcase |
 
 ---
 
