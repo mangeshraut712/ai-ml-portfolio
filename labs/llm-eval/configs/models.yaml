@@ -1,0 +1,41 @@
+# Model registry for comparison experiments
+# Live calls require corresponding env vars; otherwise offline stubs are used.
+
+providers:
+  openai:
+    env: OPENAI_API_KEY
+    default_model: gpt-4o-mini
+    stub_style: concise
+  anthropic:
+    env: ANTHROPIC_API_KEY
+    default_model: claude-3-5-haiku-latest
+    stub_style: careful
+  google:
+    env: GOOGLE_API_KEY
+    default_model: gemini-2.0-flash
+    stub_style: structured
+  qwen:
+    env: DASHSCOPE_API_KEY
+    default_model: qwen-plus
+    stub_style: detailed
+  gemma:
+    env: GOOGLE_API_KEY
+    default_model: gemma-2-9b-it
+    stub_style: concise
+  deepseek:
+    env: DEEPSEEK_API_KEY
+    default_model: deepseek-chat
+    stub_style: analytical
+  sarvam:
+    env: SARVAM_API_KEY
+    default_model: sarvam-m
+    stub_style: indic
+
+comparison_models:
+  - openai
+  - anthropic
+  - google
+  - qwen
+  - gemma
+  - deepseek
+  - sarvam

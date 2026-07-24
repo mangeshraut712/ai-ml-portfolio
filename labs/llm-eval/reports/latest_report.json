@@ -1,0 +1,123 @@
+{
+  "corpus_docs": 10,
+  "gold_n": 20,
+  "adversarial_n": 8,
+  "retrieval": {
+    "n": 20,
+    "recall_at_k": 1.0,
+    "mrr": 0.9625,
+    "ndcg_at_k": 0.9715338279036697,
+    "k": 5
+  },
+  "rerank": {
+    "n": 20,
+    "recall_at_k": 0.95,
+    "mrr": 0.95,
+    "ndcg_at_k": 0.9459860394574093,
+    "k": 3
+  },
+  "prompt_ab": {
+    "concise": {
+      "mean_token_f1": 0.4181564924608403,
+      "mean_faithfulness": 0.8909978909978911,
+      "p95_latency_ms": 14.015887149675109
+    },
+    "verbose": {
+      "mean_token_f1": 0.40333506388941176,
+      "mean_faithfulness": 0.833497890997891,
+      "p95_latency_ms": 14.009991348451877
+    }
+  },
+  "hallucination_rate_adversarial": 0.0,
+  "model_comparison": [
+    {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "mean_token_f1": 0.4182,
+      "mean_faithfulness": 0.891,
+      "p50_latency_ms": 12.0,
+      "p95_latency_ms": 12.01,
+      "batch_wall_ms": 9.66,
+      "est_cost_usd_for_gold_set": 0.00042,
+      "est_cost_usd_per_1k_queries": 0.021,
+      "mode": "stub"
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-3-5-haiku-latest",
+      "mean_token_f1": 0.4182,
+      "mean_faithfulness": 0.891,
+      "p50_latency_ms": 18.0,
+      "p95_latency_ms": 18.01,
+      "batch_wall_ms": 10.03,
+      "est_cost_usd_for_gold_set": 0.002385,
+      "est_cost_usd_per_1k_queries": 0.1192,
+      "mode": "stub"
+    },
+    {
+      "provider": "google",
+      "model": "gemini-2.0-flash",
+      "mean_token_f1": 0.4182,
+      "mean_faithfulness": 0.891,
+      "p50_latency_ms": 10.0,
+      "p95_latency_ms": 10.01,
+      "batch_wall_ms": 9.77,
+      "est_cost_usd_for_gold_set": 0.00028,
+      "est_cost_usd_per_1k_queries": 0.014,
+      "mode": "stub"
+    },
+    {
+      "provider": "qwen",
+      "model": "qwen-plus",
+      "mean_token_f1": 0.4182,
+      "mean_faithfulness": 0.891,
+      "p50_latency_ms": 15.0,
+      "p95_latency_ms": 15.01,
+      "batch_wall_ms": 9.95,
+      "est_cost_usd_for_gold_set": 0.001048,
+      "est_cost_usd_per_1k_queries": 0.0524,
+      "mode": "stub"
+    },
+    {
+      "provider": "gemma",
+      "model": "gemma-2-9b-it",
+      "mean_token_f1": 0.4182,
+      "mean_faithfulness": 0.891,
+      "p50_latency_ms": 8.0,
+      "p95_latency_ms": 8.01,
+      "batch_wall_ms": 9.82,
+      "est_cost_usd_for_gold_set": 0.0,
+      "est_cost_usd_per_1k_queries": 0.0,
+      "mode": "stub"
+    },
+    {
+      "provider": "deepseek",
+      "model": "deepseek-chat",
+      "mean_token_f1": 0.4182,
+      "mean_faithfulness": 0.891,
+      "p50_latency_ms": 11.0,
+      "p95_latency_ms": 11.01,
+      "batch_wall_ms": 9.96,
+      "est_cost_usd_for_gold_set": 0.000342,
+      "est_cost_usd_per_1k_queries": 0.0171,
+      "mode": "stub"
+    },
+    {
+      "provider": "sarvam",
+      "model": "sarvam-m",
+      "mean_token_f1": 0.4182,
+      "mean_faithfulness": 0.891,
+      "p50_latency_ms": 14.0,
+      "p95_latency_ms": 14.01,
+      "batch_wall_ms": 9.87,
+      "est_cost_usd_for_gold_set": 0.00131,
+      "est_cost_usd_per_1k_queries": 0.0655,
+      "mode": "stub"
+    }
+  ],
+  "notes": [
+    "Offline stubs used by default (EVAL_LIVE=1 enables live hook point).",
+    "TF-IDF is the local embedding baseline; swap for OpenAI/Sarvam embeddings later.",
+    "BM25 fusion reranks first-stage hits."
+  ]
+}

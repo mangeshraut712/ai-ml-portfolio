@@ -1,76 +1,132 @@
-# AI/ML Portfolio Map
+# AI/ML Portfolio
 
-Interview-ready signal map for applied MLE / speech / Indic AI / research-leaning roles.
+[![CI](https://github.com/mangeshraut712/ai-ml-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/mangeshraut712/ai-ml-portfolio/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-## Role fit (honest)
+**One clone → three hiring signals:** NumPy ML from scratch, speech VAD with labeled F1 gates, and offline LLM/RAG evaluation.
 
-| Role type | Fit | Why |
+| Lab | Prove in 60s | Signal |
 |---|---|---|
-| Applied ML Engineer | **Strong** | Shipping apps + VAD systems + RAG eval harness |
-| Speech / Audio ML | **Strong** | Proctored-style VAD with labeled F1 + latency gates |
-| LLM / RAG Engineer | **Good → Strong** | Retrieval/faithfulness/cost lab (expand gold + live providers for research bar) |
-| Classical ML interview pivot | **Strong** | NumPy-from-scratch + math notes |
-| Research Scientist (DL-heavy) | **Emerging** | MLP + attention from scratch added; still needs a public train/eval card |
+| **MLFS** (`mlfs/`) | `make test-mlfs && make demo` | Derive GD, trees, ROC, MLP backprop, attention |
+| **VAD** (`labs/vad/`) | `make verify-vad-pass` → **FULL_PASS** | Denoiser → WebRTC GMM → hangover; F1 ≈ 0.957 |
+| **LLM eval** (`labs/llm-eval/`) | `make lab-llm-eval` | Recall@k / MRR / nDCG, faithfulness, cost matrix |
 
-## Portfolio map
+Sibling (kept separate on purpose): [`sarvam-ai-cookbook`](https://github.com/mangeshraut712/sarvam-ai-cookbook) — India-first Sarvam API demos + Next.js showcase (upstream fork).
 
-| Repo | Primary signal | Prove in 60 seconds | Interview line |
-|---|---|---|---|
-| [`sarvam-ai-cookbook`](https://github.com/mangeshraut712/sarvam-ai-cookbook) | **Ship + evaluate** India-first AI | `make verify-vad-pass` · `make lab-llm-eval` | “I build production-shaped speech/LLM systems and measure them.” |
-| [`machine-learning-from-scratch`](https://github.com/mangeshraut712/machine-learning-from-scratch) | **Defend fundamentals** (classical + mini-DL) | `make test && make demo` | “I can derive GD, regularization, trees, ROC, backprop, and attention.” |
-| [`ai-ml-portfolio`](https://github.com/mangeshraut712/ai-ml-portfolio) *(this repo)* | **Recruiter index** | Read this README | “Here is the map of what I own and how to verify it.” |
+---
 
-```text
-                    ┌─────────────────────────┐
-                    │   ai-ml-portfolio       │
-                    │   (index / narrative)   │
-                    └───────────┬─────────────┘
-              ┌─────────────────┴─────────────────┐
-              ▼                                   ▼
-┌─────────────────────────────┐     ┌─────────────────────────────────┐
-│ sarvam-ai-cookbook          │     │ machine-learning-from-scratch   │
-│ • examples/ (apps)          │     │ • classical ML (NumPy)          │
-│ • VAD challenge (FULL_PASS) │     │ • MLP + attention (from scratch)│
-│ • lab/llm-eval (RAG/metrics)│     │ • bias–variance, ROC, CV        │
-└─────────────────────────────┘     └─────────────────────────────────┘
-```
-
-## What “qualified” means here
-
-A repo qualifies an AI/ML candidate when a reviewer can:
-
-1. **Clone → run one command → see measured results** (not screenshots only)
-2. Hear a **defendable trade-off** (accuracy vs latency, stub vs live, L1 vs L2)
-3. See **tests / gates** that fail when quality regresses
-4. Map work to a **job function** (systems, eval, fundamentals)
-
-## Verification cheat sheet
+## Quick start
 
 ```bash
-# Applied systems + eval
-cd sarvam-ai-cookbook
-make verify-vad-pass
-make lab-llm-eval
-make lab-llm-eval-test
-
-# Fundamentals
-cd machine-learning-from-scratch
-make install && make test && make demo
+git clone https://github.com/mangeshraut712/ai-ml-portfolio.git
+cd ai-ml-portfolio
+make install
+make verify-all
 ```
 
-## Target roles & talking points
+`verify-all` runs MLFS tests, LLM-eval smoke, and the VAD **FULL_PASS** acceptance gate.
 
-**MLE / Applied AI**
-- VAD: Denoiser → WebRTC GMM → hangover; clean exact F1 ≈ 0.96; 258/258 frame coverage; p95 ≈ 20 ms
-- LLM lab: Recall@k / MRR / nDCG, faithfulness, hallucination rate, $/1k queries, multi-model matrix
+---
 
-**When they pivot off LLMs**
-- Derive `θ ← θ − η∇L`, L1 sparsity vs L2 shrinkage, bias–variance U-curve, ROC-AUC meaning
-- Sketch backprop through an MLP and scaled-dot-product attention
+## Layout
 
-## Roadmap (next hiring-signal upgrades)
+```text
+.
+├── mlfs/                 # Classical ML + mini-DL (NumPy)
+├── tests/                # MLFS unit tests
+├── labs/
+│   ├── vad/              # Speech VAD challenge (FULL_PASS)
+│   └── llm-eval/         # Offline RAG / LLM evaluation
+├── sample_data/          # 50× 16 kHz WAVs + labeled ground truth
+├── notebooks/            # Walkthroughs
+├── INTERVIEW_NOTES.md    # Pivot talking points
+├── Makefile
+└── .github/workflows/ci.yml
+```
 
-- [ ] Live provider runs in `lab/llm-eval` (`EVAL_LIVE=1`) with differentiated scores
-- [ ] Expand gold set to 50–100+ queries + data card
-- [ ] Neural VAD A/B (ONNX) next to GMM in the cookbook
-- [ ] Public fine-tune + eval card for research-track interviews
+```mermaid
+flowchart LR
+  README[ai-ml-portfolio] --> MLFS[mlfs NumPy]
+  README --> VAD[labs/vad FULL_PASS]
+  README --> LLM[labs/llm-eval]
+  README -.-> COOK[sarvam-ai-cookbook fork]
+```
+
+---
+
+## Role fit
+
+| Role | Fit | Why |
+|---|---|---|
+| Applied ML Engineer | **Strong** | Ship + measure (VAD gates, RAG metrics) |
+| Speech / Audio ML | **Strong** | Proctored-style VAD, latency/RTF evidence |
+| LLM / RAG Engineer | **Good → Strong** | Retrieval + faithfulness + cost (expand gold for research bar) |
+| Classical ML pivot | **Strong** | From-scratch algorithms + interview notes |
+| Research (DL-heavy) | **Emerging** | MLP + attention from scratch; add a public train/eval card next |
+
+---
+
+## Labs
+
+### 1) Machine Learning From Scratch
+
+```bash
+make test-mlfs
+make demo
+```
+
+Linear/logistic, trees/RF/GBDT, KNN, NB, SVM, PCA, KMeans, GD, CV, ROC/AUC, calibration, bias–variance, **MLP backprop**, **attention**. See [`INTERVIEW_NOTES.md`](./INTERVIEW_NOTES.md).
+
+### 2) VAD Interview Challenge
+
+Spectral-gate denoiser → WebRTC GMM (aggressiveness 2) → hangover. No external inference APIs.
+
+| Metric | Measured |
+|---|---:|
+| Exact clean mean F1 | **0.9569** |
+| Exact noisy mean F1 | **0.7768** |
+| Soft mean F1 | **0.8135** |
+| Steady p95 latency | **~19 ms** |
+| sample_001 frames | **258/258** |
+
+```bash
+make verify-vad-pass
+make run-vad-ui
+```
+
+### 3) LLM Evaluation Lab
+
+Offline-first (stub generators without API keys): TF-IDF → BM25 fusion → faithfulness / hallucination → prompt A/B → latency & $/1k → multi-model matrix.
+
+```bash
+make lab-llm-eval-test
+make lab-llm-eval
+make run-llm-eval-ui
+```
+
+---
+
+## CI
+
+GitHub Actions runs on Python **3.10 / 3.11 / 3.12**:
+
+- MLFS pytest + demos  
+- VAD unit tests + **FULL_PASS** gate  
+- LLM-eval tests + smoke report  
+
+---
+
+## Related repos
+
+| Repo | Keep? | Role |
+|---|---|---|
+| **This monorepo** | Yes | Interview-ready owned labs |
+| [`sarvam-ai-cookbook`](https://github.com/mangeshraut712/sarvam-ai-cookbook) | Yes (sibling) | Sarvam product demos / fork |
+| `machine-learning-from-scratch` | Archived after merge | Content lives in `mlfs/` here |
+
+---
+
+## License
+
+MIT — see [`LICENSE`](./LICENSE).

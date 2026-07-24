@@ -1,0 +1,20 @@
+{"id": "q1", "question": "What is Sarvam AI?", "answer": "An India-first sovereign AI company building multilingual Indic models.", "relevant_doc_ids": ["doc_0"]}
+{"id": "q2", "question": "What is Bulbul used for?", "answer": "Text-to-speech with controllable speaker and style via latent decomposition.", "relevant_doc_ids": ["doc_1"]}
+{"id": "q3", "question": "What latency budget is mentioned for interactive STT?", "answer": "p95 under 800ms.", "relevant_doc_ids": ["doc_2"]}
+{"id": "q4", "question": "Why evaluate Indian NLP per language?", "answer": "Code-mixing, dialects, and script diversity make English-only scores misleading.", "relevant_doc_ids": ["doc_3"]}
+{"id": "q5", "question": "Which metrics measure retrieval quality?", "answer": "Recall@k and MRR (also nDCG).", "relevant_doc_ids": ["doc_4"]}
+{"id": "q6", "question": "What does a reranker do?", "answer": "Reorders first-stage candidates to improve precision at small k.", "relevant_doc_ids": ["doc_6"]}
+{"id": "q7", "question": "How should a faithful RAG system handle missing evidence?", "answer": "Say I don't know instead of fabricating.", "relevant_doc_ids": ["doc_4", "doc_7"]}
+{"id": "q8", "question": "What should production RAG reports include besides quality?", "answer": "p50/p95 latency and estimated cost per 1000 queries.", "relevant_doc_ids": ["doc_8"]}
+{"id": "q9", "question": "Name classical ML topics interviewers may pivot to.", "answer": "Gradient descent, regularization, bias-variance, ROC-AUC, tree ensembles.", "relevant_doc_ids": ["doc_9"]}
+{"id": "q10", "question": "How are dense embeddings typically scored in search?", "answer": "Cosine similarity.", "relevant_doc_ids": ["doc_5"]}
+{"id": "q11", "question": "Describe Sarvam AI in one sentence.", "answer": "An India-first sovereign AI company building multilingual Indic models.", "relevant_doc_ids": ["doc_0"]}
+{"id": "q12", "question": "How does Bulbul separate speaker identity from content?", "answer": "Latent space decomposition separates content from speaker/style.", "relevant_doc_ids": ["doc_1"]}
+{"id": "q13", "question": "What p95 latency target is discussed for interactive speech systems?", "answer": "Under 800ms.", "relevant_doc_ids": ["doc_2"]}
+{"id": "q14", "question": "Name two retrieval metrics used in RAG evaluation.", "answer": "Recall@k and MRR.", "relevant_doc_ids": ["doc_4"]}
+{"id": "q15", "question": "What is nDCG used for?", "answer": "Rank-discounted graded relevance of retrieved documents.", "relevant_doc_ids": ["doc_4"]}
+{"id": "q16", "question": "Why use a reranker after dense or TF-IDF retrieval?", "answer": "To improve precision at small k by reordering candidates.", "relevant_doc_ids": ["doc_6"]}
+{"id": "q17", "question": "What should happen if context is insufficient?", "answer": "Abstain with I don't know.", "relevant_doc_ids": ["doc_4", "doc_7"]}
+{"id": "q18", "question": "Which two production KPIs should RAG reports include besides quality?", "answer": "Latency percentiles and cost per 1000 queries.", "relevant_doc_ids": ["doc_8"]}
+{"id": "q19", "question": "What similarity function is common for dense embeddings?", "answer": "Cosine similarity.", "relevant_doc_ids": ["doc_5"]}
+{"id": "q20", "question": "List classical ML topics for LLM interview pivots.", "answer": "Gradient descent, regularization, bias-variance, ROC-AUC, tree ensembles.", "relevant_doc_ids": ["doc_9"]}

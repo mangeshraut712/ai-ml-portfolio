@@ -1,0 +1,47 @@
+[project]
+name = "ai-ml-portfolio"
+version = "1.0.0"
+description = "AI/ML hiring monorepo — NumPy ML from scratch, VAD FULL_PASS lab, offline LLM/RAG eval"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Mangesh Raut" }]
+dependencies = [
+  "numpy>=1.24.0",
+  "matplotlib>=3.7.0",
+]
+
+[project.optional-dependencies]
+vad = [
+  "webrtcvad>=2.0.10",
+  "librosa>=0.10.0",
+  "soundfile>=0.12.1",
+  "scipy>=1.7.0",
+  "huggingface_hub>=0.20.0",
+  "setuptools>=70.0.0,<81",
+]
+llm-eval = [
+  "scikit-learn>=1.3.0",
+  "rank-bm25>=0.2.2",
+  "PyYAML>=6.0",
+]
+dev = ["pytest>=7.0.0", "black", "isort", "flake8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "labs/vad/test_vad_pipeline.py", "labs/llm-eval/tests"]
+pythonpath = ["."]
+filterwarnings = [
+  "ignore:pkg_resources is deprecated:UserWarning",
+  "ignore:pkg_resources is deprecated:DeprecationWarning",
+  "ignore:'aifc' is deprecated:DeprecationWarning",
+  "ignore:'audioop' is deprecated:DeprecationWarning",
+  "ignore:'sunau' is deprecated:DeprecationWarning",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 88

@@ -1,0 +1,23 @@
+name: baseline_rag
+chunk_size: 180
+chunk_overlap: 40
+top_k: 5
+rerank_k: 3
+embedder: tfidf
+prompts:
+  concise: |
+    Answer using ONLY the context. If insufficient, say "I don't know".
+    Context:
+    {context}
+
+    Question: {question}
+    Answer:
+  verbose: |
+    You are a careful assistant. Use the context below. Quote supporting phrases.
+    If the context is insufficient, reply exactly: I don't know.
+
+    Context:
+    {context}
+
+    Question: {question}
+    Step-by-step answer:
