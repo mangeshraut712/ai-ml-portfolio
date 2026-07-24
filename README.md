@@ -6,6 +6,10 @@
 
 **One clone → three hiring signals:** NumPy ML from scratch, speech VAD with labeled F1 gates, and offline LLM/RAG evaluation.
 
+> **Proof (CI-verified)** — [CI](https://github.com/mangeshraut712/ai-ml-portfolio/actions/workflows/ci.yml) · Python **3.10–3.12** matrix green · `make verify-all` / `make verify-vad-pass` → **FULL_PASS**  
+> VAD: exact clean F1 **0.9569** · noisy **0.7768** · soft **0.8135** · p95 ~**19 ms** · sample_001 **258/258**  
+> LLM eval: [`DATA_CARD.md`](labs/llm-eval/DATA_CARD.md) · [`RESULTS.md`](labs/llm-eval/RESULTS.md) (stub baseline in CI; live optional)
+
 | Lab | Prove in 60s | Signal |
 |---|---|---|
 | **MLFS** (`mlfs/`) | `make test-mlfs && make demo` | Derive GD, trees, ROC, MLP backprop, attention |
@@ -106,7 +110,7 @@ Experimental neural / energy VAD A/B (`--backend neural|compare`) is available f
 
 ### 3) LLM Evaluation Lab
 
-Offline-first (stub generators without API keys): TF-IDF → BM25 fusion → faithfulness / hallucination → prompt A/B → latency & $/1k → multi-model matrix. Optional live path: `EVAL_LIVE=1` + provider keys (`make lab-llm-eval-live`). Gold: 40 QA + 15 adversarial — see [`labs/llm-eval/DATA_CARD.md`](labs/llm-eval/DATA_CARD.md).
+Offline-first (stub generators without API keys): TF-IDF → BM25 fusion → faithfulness / hallucination → prompt A/B → latency & $/1k → multi-model matrix. Optional live path: `EVAL_LIVE=1` + provider keys (`make lab-llm-eval-live`). Gold: 40 QA + 15 adversarial — see [`DATA_CARD.md`](labs/llm-eval/DATA_CARD.md) and stub/live metrics in [`RESULTS.md`](labs/llm-eval/RESULTS.md).
 
 ```bash
 make lab-llm-eval-test
