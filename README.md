@@ -2,9 +2,13 @@
 
 [![CI](https://github.com/mangeshraut712/ai-ml-portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/mangeshraut712/ai-ml-portfolio/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/downloads/)
+[![NumPy](https://img.shields.io/badge/NumPy-from%20scratch-013243)](https://numpy.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-local%20demos-FF4B4B)](https://streamlit.io/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 **One clone → three hiring signals:** NumPy ML from scratch, speech VAD with labeled F1 gates, and offline LLM/RAG evaluation.
+
+**Home:** this README (GitHub). **Interactive UIs (local):** `make run-vad-ui` · `make run-llm-eval-ui`. No hosted Streamlit/Vercel app — clone and run.
 
 > **Proof (CI-verified)** — [CI](https://github.com/mangeshraut712/ai-ml-portfolio/actions/workflows/ci.yml) · Python **3.10–3.12** matrix green · `make verify-all` / `make verify-vad-pass` → **FULL_PASS**  
 > VAD: exact clean F1 **0.9569** · noisy **0.7768** · soft **0.8135** · p95 ~**19 ms** · sample_001 **258/258**  
@@ -17,6 +21,24 @@
 | **LLM eval** (`labs/llm-eval/`) | `make lab-llm-eval` | Recall@k / MRR / nDCG, faithfulness, cost matrix |
 
 Sibling (kept separate on purpose): [`sarvam-ai-cookbook`](https://github.com/mangeshraut712/sarvam-ai-cookbook) — India-first Sarvam API demos + Next.js showcase (upstream fork).
+
+---
+
+## Gallery
+
+Plots captured from the same lab paths as `make demo`, `make lab-llm-eval`, and the VAD Streamlit timeline (`make run-vad-ui`). Refresh with `python docs/screenshots/render_gallery.py`.
+
+**ML from scratch** — logistic ROC + polynomial bias–variance (`mlfs/`)
+
+![MLFS ROC and bias–variance](docs/screenshots/mlfs-roc-bias-variance.png)
+
+**VAD** — denoiser + WebRTC GMM on `sample_001.wav` (aggressiveness 2)
+
+![VAD waveform and speech flags](docs/screenshots/vad-timeline.png)
+
+**LLM eval** — offline stub retrieval + provider matrix (`labs/llm-eval/`)
+
+![LLM eval dashboard](docs/screenshots/llm-eval-dashboard.png)
 
 ---
 
@@ -50,6 +72,7 @@ EVAL_LIVE=1 OPENAI_API_KEY=... make lab-llm-eval-live
 │   └── llm-eval/         # Offline RAG / LLM evaluation
 ├── sample_data/          # 50× 16 kHz WAVs + labeled ground truth
 ├── notebooks/            # Walkthroughs
+├── docs/screenshots/     # README gallery (rendered from labs)
 ├── INTERVIEW_NOTES.md    # Pivot talking points
 ├── Makefile
 └── .github/workflows/ci.yml

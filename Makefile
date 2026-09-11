@@ -1,4 +1,4 @@
-.PHONY: help install test test-mlfs demo verify-vad-pass lab-llm-eval lab-llm-eval-live lab-llm-eval-test verify-all fetch-vad-samples run-vad-ui run-llm-eval-ui
+.PHONY: help install test test-mlfs demo verify-vad-pass lab-llm-eval lab-llm-eval-live lab-llm-eval-test verify-all fetch-vad-samples run-vad-ui run-llm-eval-ui gallery
 
 VENV ?= .venv
 PY := $(VENV)/bin/python
@@ -16,6 +16,7 @@ help:
 	@echo "  make fetch-vad-samples - re-download 50× 16 kHz WAVs"
 	@echo "  make run-vad-ui        - Streamlit VAD UI"
 	@echo "  make run-llm-eval-ui   - Streamlit LLM eval report UI"
+	@echo "  make gallery           - refresh README screenshots"
 
 install:
 	python3 -m venv $(VENV)
@@ -58,3 +59,6 @@ run-vad-ui:
 run-llm-eval-ui:
 	@test -f labs/llm-eval/reports/latest_report.json || $(MAKE) lab-llm-eval
 	$(PY) -m streamlit run labs/llm-eval/ui/streamlit_app.py
+
+gallery:
+	PYTHONPATH=. MPLBACKEND=Agg $(PY) docs/screenshots/render_gallery.py
