@@ -11,3 +11,6 @@ dist/
 build/
 .env
 node_modules/
+# Local agent tooling
+.agents/
+skills-lock.json
