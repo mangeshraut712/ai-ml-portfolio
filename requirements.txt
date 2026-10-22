@@ -16,3 +16,5 @@ streamlit>=1.30.0
 scikit-learn>=1.3.0
 rank-bm25>=0.2.2
 PyYAML>=6.0
+# emSign CA advisory: require patched CA bundle
+certifi>=2026.10.19
