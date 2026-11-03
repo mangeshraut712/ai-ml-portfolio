@@ -2,6 +2,29 @@
 
 from __future__ import annotations
 
+import sys
+import types
+
+# webrtcvad 2.0.10 imports pkg_resources only to read its own version.
+# setuptools>=82 no longer ships pkg_resources; provide a tiny stub so the
+# import succeeds under the security-floor pin (>=84.1.0).
+if "pkg_resources" not in sys.modules:
+    stub = types.ModuleType("pkg_resources")
+
+    class _Dist:
+        version = "2.0.10"
+
+        def __init__(self, version: str = "2.0.10") -> None:
+            self.version = version
+
+    def get_distribution(name: str) -> _Dist:
+        if name == "webrtcvad":
+            return _Dist("2.0.10")
+        raise Exception(f"DistributionNotFound: {name}")
+
+    stub.get_distribution = get_distribution  # type: ignore[attr-defined]
+    sys.modules["pkg_resources"] = stub
+
 import numpy as np
 import webrtcvad
 from postprocess import apply_hangover, flags_to_segments
