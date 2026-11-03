@@ -9,7 +9,7 @@ librosa>=0.10.0
 soundfile>=0.12.1
 scipy>=1.7.0
 huggingface_hub>=0.20.0
-setuptools>=70.0.0,<81
+setuptools>=84.1.0
 streamlit>=1.30.0
 
 # LLM Evaluation Lab
