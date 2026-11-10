@@ -11,6 +11,15 @@ class PCA:
 
     def fit(self, X: np.ndarray) -> "PCA":
         X = np.asarray(X, dtype=float)
+        if X.ndim != 2 or X.size == 0:
+            raise ValueError("X must be a non-empty 2-D array")
+        max_components = min(X.shape)
+        if self.n_components < 1:
+            raise ValueError("n_components must be a positive integer")
+        if self.n_components > max_components:
+            raise ValueError(
+                f"n_components ({self.n_components}) cannot exceed min(n_samples, n_features) ({max_components})"
+            )
         self.mean_ = X.mean(axis=0)
         Xc = X - self.mean_
         # economy SVD
