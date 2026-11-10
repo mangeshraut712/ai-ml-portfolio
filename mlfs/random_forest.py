@@ -54,5 +54,5 @@ class RandomForestClassifier:
         out = []
         for col in votes_arr.T:
             vals, counts = np.unique(col, return_counts=True)
-            out.append(int(vals[np.argmax(counts)]))
+            out.append(vals[np.argmax(counts)])
         return np.asarray(out)
