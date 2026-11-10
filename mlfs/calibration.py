@@ -8,6 +8,10 @@ import numpy as np
 def brier_score(y_true: np.ndarray, proba: np.ndarray) -> float:
     y = np.asarray(y_true, dtype=float).reshape(-1)
     p = np.asarray(proba, dtype=float).reshape(-1)
+    if y.size == 0 or p.size == 0:
+        raise ValueError("y_true and proba must be non-empty")
+    if y.shape != p.shape:
+        raise ValueError(f"y_true and proba must have the same length, got {y.shape} and {p.shape}")
     return float(np.mean((p - y) ** 2))
 
 
