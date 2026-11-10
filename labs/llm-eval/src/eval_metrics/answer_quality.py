@@ -8,6 +8,8 @@ _TOKEN = re.compile(r"[a-z0-9']+")
 
 
 def token_f1(pred: str, gold: str) -> float:
+    if pred is None or gold is None:
+        raise TypeError("pred and gold must be strings, not None")
     p = _TOKEN.findall(pred.lower())
     g = _TOKEN.findall(gold.lower())
     if not p and not g:
