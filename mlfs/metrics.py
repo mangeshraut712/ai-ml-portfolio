@@ -23,15 +23,23 @@ def precision_recall_f1(y_true: np.ndarray, y_pred: np.ndarray) -> tuple[float, 
 
 def roc_curve(y_true: np.ndarray, scores: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """Return FPR, TPR arrays for descending thresholds."""
-    y_true = y_true.astype(int)
+    y_true = np.asarray(y_true).reshape(-1)
+    scores = np.asarray(scores).reshape(-1)
+    if y_true.size == 0 or scores.size == 0:
+        raise ValueError("y_true and scores must be non-empty")
+    if y_true.shape != scores.shape:
+        raise ValueError("y_true and scores must have the same length")
+    y = y_true.astype(int)
+    positives = int(np.sum(y == 1))
+    negatives = int(np.sum(y == 0))
+    if positives == 0 or negatives == 0:
+        raise ValueError("roc_curve requires both classes in y_true")
     order = np.argsort(-scores)
-    y = y_true[order]
-    P = max(np.sum(y == 1), 1)
-    N = max(np.sum(y == 0), 1)
+    y = y[order]
     tps = np.cumsum(y == 1)
     fps = np.cumsum(y == 0)
-    tpr = tps / P
-    fpr = fps / N
+    tpr = tps / positives
+    fpr = fps / negatives
     return np.concatenate([[0.0], fpr]), np.concatenate([[0.0], tpr])
 
 
