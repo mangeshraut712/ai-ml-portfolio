@@ -14,6 +14,12 @@ class KMeans:
     def fit(self, X: np.ndarray) -> "KMeans":
         rng = np.random.default_rng(self.seed)
         X = np.asarray(X, dtype=float)
+        if self.n_clusters < 1:
+            raise ValueError("n_clusters must be a positive integer")
+        if self.n_clusters > len(X):
+            raise ValueError(
+                f"n_clusters ({self.n_clusters}) cannot exceed the number of samples ({len(X)})"
+            )
         idx = rng.choice(len(X), size=self.n_clusters, replace=False)
         self.centroids_ = X[idx].copy()
         for _ in range(self.n_iter):
