@@ -6,7 +6,14 @@ import math
 from typing import Iterable, Sequence
 
 
+def _require_positive_k(k: int) -> int:
+    if isinstance(k, bool) or not isinstance(k, int) or k < 1:
+        raise ValueError("k must be a positive integer")
+    return k
+
+
 def recall_at_k(relevant: Sequence[str], retrieved: Sequence[str], k: int) -> float:
+    k = _require_positive_k(k)
     if not relevant:
         return 0.0
     top = set(retrieved[:k])
@@ -23,6 +30,7 @@ def mrr(relevant: Sequence[str], retrieved: Sequence[str]) -> float:
 
 
 def ndcg_at_k(relevant: Sequence[str], retrieved: Sequence[str], k: int) -> float:
+    k = _require_positive_k(k)
     rel = set(relevant)
     dcg = 0.0
     for i, doc_id in enumerate(retrieved[:k], start=1):
