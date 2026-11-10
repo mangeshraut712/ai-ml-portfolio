@@ -37,15 +37,15 @@ class MLPClassifier:
     def fit(self, X: np.ndarray, y: np.ndarray) -> "MLPClassifier":
         rng = np.random.default_rng(self.seed)
         X = np.asarray(X, dtype=float)
-        y = np.asarray(y).reshape(-1).astype(int)
+        y = np.asarray(y).reshape(-1)
         n, d = X.shape
         classes = np.unique(y)
         self.classes_ = classes
         k = len(classes)
-        class_to_idx = {int(c): i for i, c in enumerate(classes)}
+        class_to_idx = {c: i for i, c in enumerate(classes)}
         Y = np.zeros((n, k))
         for i, yi in enumerate(y):
-            Y[i, class_to_idx[int(yi)]] = 1.0
+            Y[i, class_to_idx[yi]] = 1.0
 
         self.W1_ = rng.normal(0, 0.1, size=(d, self.hidden))
         self.b1_ = np.zeros(self.hidden)
