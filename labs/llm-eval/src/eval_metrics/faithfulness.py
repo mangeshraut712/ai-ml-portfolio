@@ -11,13 +11,25 @@ def _tokens(text: str) -> set[str]:
     return set(_TOKEN.findall(text.lower()))
 
 
+def _normalize_answer(answer: str) -> str:
+    return answer.strip().lower().strip(".,!? ")
+
+
+def is_abstention(answer: str) -> bool:
+    ans = _normalize_answer(answer)
+    return (
+        ans.startswith("i don't know")
+        or ans.startswith("i do not know")
+        or ans in {"unknown", "n/a"}
+    )
+
+
 def faithfulness_score(answer: str, contexts: list[str]) -> float:
     """Lexical support: fraction of answer content tokens found in context.
 
     Abstentions ('i don't know') score 1.0 when intentional.
     """
-    ans = answer.strip().lower()
-    if ans in {"i don't know", "i do not know", "unknown", "n/a"}:
+    if is_abstention(answer):
         return 1.0
     a_toks = _tokens(answer)
     if not a_toks:
@@ -30,11 +42,6 @@ def faithfulness_score(answer: str, contexts: list[str]) -> float:
         return 1.0
     hit = sum(1 for t in a_toks if t in ctx)
     return hit / len(a_toks)
-
-
-def is_abstention(answer: str) -> bool:
-    ans = answer.strip().lower()
-    return ans.startswith("i don't know") or ans.startswith("i do not know")
 
 
 def hallucination_on_unanswerable(answer: str) -> bool:
