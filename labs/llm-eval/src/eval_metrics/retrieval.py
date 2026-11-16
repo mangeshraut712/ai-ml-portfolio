@@ -7,6 +7,8 @@ from typing import Iterable, Sequence
 
 
 def recall_at_k(relevant: Sequence[str], retrieved: Sequence[str], k: int) -> float:
+    if k <= 0:
+        raise ValueError(f"k must be a positive integer, got {k}")
     if not relevant:
         return 0.0
     top = set(retrieved[:k])
@@ -23,6 +25,8 @@ def mrr(relevant: Sequence[str], retrieved: Sequence[str]) -> float:
 
 
 def ndcg_at_k(relevant: Sequence[str], retrieved: Sequence[str], k: int) -> float:
+    if k <= 0:
+        raise ValueError(f"k must be a positive integer, got {k}")
     rel = set(relevant)
     dcg = 0.0
     for i, doc_id in enumerate(retrieved[:k], start=1):
