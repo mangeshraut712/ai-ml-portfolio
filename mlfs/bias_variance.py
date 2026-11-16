@@ -15,6 +15,8 @@ def make_toy_regression(n: int = 40, seed: int = 0) -> tuple[np.ndarray, np.ndar
 
 
 def poly_features(X: np.ndarray, degree: int) -> np.ndarray:
+    if degree < 1:
+        raise ValueError(f"degree must be a positive integer, got {degree}")
     cols = [X**d for d in range(1, degree + 1)]
     return np.hstack(cols)
 
