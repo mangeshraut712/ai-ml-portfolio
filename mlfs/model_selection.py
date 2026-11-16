@@ -8,6 +8,10 @@ import numpy as np
 
 
 def kfold_indices(n: int, n_splits: int = 5, seed: int = 0) -> list[tuple[np.ndarray, np.ndarray]]:
+    if n_splits < 2:
+        raise ValueError(f"n_splits must be at least 2, got {n_splits}")
+    if n_splits > n:
+        raise ValueError(f"n_splits must be <= n, got n_splits={n_splits} n={n}")
     rng = np.random.default_rng(seed)
     idx = rng.permutation(n)
     folds = np.array_split(idx, n_splits)
