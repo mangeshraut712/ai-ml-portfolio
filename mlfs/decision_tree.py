@@ -21,7 +21,7 @@ class Node:
     threshold: float | None = None
     left: "Node | None" = None
     right: "Node | None" = None
-    prediction: int | None = None
+    prediction: object | None = None
 
 
 class DecisionTreeClassifier:
@@ -43,7 +43,7 @@ class DecisionTreeClassifier:
             or len(np.unique(y)) == 1
         ):
             values, counts = np.unique(y, return_counts=True)
-            return Node(prediction=int(values[np.argmax(counts)]))
+            return Node(prediction=values[np.argmax(counts)])
 
         feat, thr, best = None, None, 1e18
         parent = gini(y)
@@ -58,7 +58,7 @@ class DecisionTreeClassifier:
                     best, feat, thr = impurity, j, float(t)
         if feat is None or best >= parent:
             values, counts = np.unique(y, return_counts=True)
-            return Node(prediction=int(values[np.argmax(counts)]))
+            return Node(prediction=values[np.argmax(counts)])
 
         mask = X[:, feat] <= thr
         return Node(
@@ -68,7 +68,7 @@ class DecisionTreeClassifier:
             right=self._grow(X[~mask], y[~mask], depth + 1),
         )
 
-    def _predict_one(self, x: np.ndarray, node: Node) -> int:
+    def _predict_one(self, x: np.ndarray, node: Node) -> object:
         if node.prediction is not None:
             return node.prediction
         assert node.feature is not None and node.threshold is not None
