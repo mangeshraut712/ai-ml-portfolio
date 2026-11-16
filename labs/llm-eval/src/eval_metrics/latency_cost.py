@@ -7,7 +7,9 @@ from typing import Sequence
 
 def percentile(values: Sequence[float], p: float) -> float:
     if not values:
-        return 0.0
+        raise ValueError("values must be non-empty")
+    if p < 0 or p > 100:
+        raise ValueError(f"percentile p must be in [0, 100], got {p}")
     xs = sorted(values)
     if len(xs) == 1:
         return float(xs[0])
