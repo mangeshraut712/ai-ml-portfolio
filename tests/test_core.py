@@ -85,3 +85,22 @@ def test_gbdt_and_calibration():
     assert accuracy(y, clf.predict(X)) > 0.85
     assert brier_score(y, proba) < 0.2
     assert expected_calibration_error(y, proba) < 0.35
+
+
+
+def test_knn_preserves_string_labels():
+    X = np.array([[0.0, 0.0], [0.1, 0.0], [5.0, 5.0], [5.1, 5.0]])
+    y = np.array(["a", "a", "b", "b"])
+    pred = KNNClassifier(k=3).fit(X, y).predict(np.array([[0.0, 0.05]]))
+    assert pred.shape == (1,)
+    assert pred[0] == "a"
+
+
+def test_knn_rejects_non_positive_k():
+    for k in (0, -1):
+        try:
+            KNNClassifier(k=k)
+        except ValueError as exc:
+            assert "positive integer" in str(exc)
+        else:
+            raise AssertionError(f"KNNClassifier accepted k={k}")
