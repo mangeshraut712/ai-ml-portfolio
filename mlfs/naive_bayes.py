@@ -15,9 +15,9 @@ class GaussianNB:
         self.priors_ = {}
         for c in self.classes_:
             Xc = X[y == c]
-            self.mean_[int(c)] = Xc.mean(axis=0)
-            self.var_[int(c)] = Xc.var(axis=0) + 1e-9
-            self.priors_[int(c)] = len(Xc) / len(X)
+            self.mean_[c] = Xc.mean(axis=0)
+            self.var_[c] = Xc.var(axis=0) + 1e-9
+            self.priors_[c] = len(Xc) / len(X)
         return self
 
     def _log_gauss(self, x: np.ndarray, mean: np.ndarray, var: np.ndarray) -> float:
@@ -31,7 +31,6 @@ class GaussianNB:
         for x in X:
             best_c, best_score = None, -1e18
             for c in self.classes_:
-                c = int(c)
                 score = np.log(self.priors_[c]) + self._log_gauss(
                     x, self.mean_[c], self.var_[c]
                 )
