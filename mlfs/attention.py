@@ -18,8 +18,10 @@ def scaled_dot_product_attention(
     d = Q.shape[-1]
     scores = (Q @ np.swapaxes(K, -1, -2)) / np.sqrt(d)
     if mask is not None:
-        scores = np.where(mask, scores, -1e9)
+        scores = np.where(mask, scores, -np.inf)
     weights = softmax(scores, axis=-1)
+    # A fully masked query becomes 0/0 after softmax; do not attend to any key.
+    weights = np.nan_to_num(weights, nan=0.0, posinf=0.0, neginf=0.0)
     return weights @ V, weights
 
 
