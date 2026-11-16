@@ -5,8 +5,19 @@ from __future__ import annotations
 import numpy as np
 
 
+def _as_1d_pair(y_true: np.ndarray, y_pred: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    yt = np.asarray(y_true).reshape(-1)
+    yp = np.asarray(y_pred).reshape(-1)
+    if yt.size == 0 or yp.size == 0:
+        raise ValueError("y_true and y_pred must be non-empty")
+    if yt.shape != yp.shape:
+        raise ValueError(f"y_true and y_pred must have the same length, got {yt.shape} and {yp.shape}")
+    return yt, yp
+
+
 def accuracy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
-    return float(np.mean(y_true == y_pred))
+    yt, yp = _as_1d_pair(y_true, y_pred)
+    return float(np.mean(yt == yp))
 
 
 def precision_recall_f1(y_true: np.ndarray, y_pred: np.ndarray) -> tuple[float, float, float]:
