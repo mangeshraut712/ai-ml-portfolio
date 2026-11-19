@@ -45,10 +45,14 @@ def roc_curve(y_true: np.ndarray, scores: np.ndarray) -> tuple[np.ndarray, np.nd
     negatives = int(np.sum(y == 0))
     if positives == 0 or negatives == 0:
         raise ValueError("roc_curve requires both classes in y_true")
-    order = np.argsort(-scores)
+    order = np.argsort(-scores, kind="stable")
     y = y[order]
-    tps = np.cumsum(y == 1)
-    fps = np.cumsum(y == 0)
+    sorted_scores = scores[order]
+    # One ROC point per distinct threshold, so tied scores form a diagonal
+    # segment (worth 0.5) instead of depending on input order.
+    last_of_each_score = np.r_[np.flatnonzero(np.diff(sorted_scores)), y.size - 1]
+    tps = np.cumsum(y == 1)[last_of_each_score]
+    fps = np.cumsum(y == 0)[last_of_each_score]
     tpr = tps / positives
     fpr = fps / negatives
     return np.concatenate([[0.0], fpr]), np.concatenate([[0.0], tpr])
