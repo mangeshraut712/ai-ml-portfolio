@@ -26,6 +26,7 @@ class GradientBoostingBinary:
         self.learning_rate = learning_rate
         self.seed = seed
         self.trees_: list[DecisionTreeClassifier] = []
+        self.step_scales_: list[float] = []
         self.init_ = 0.0
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> "GradientBoostingBinary":
@@ -36,6 +37,7 @@ class GradientBoostingBinary:
         self.init_ = float(np.log(p / (1 - p)))
         F = np.full(len(y), self.init_)
         self.trees_ = []
+        self.step_scales_ = []
         rng = np.random.default_rng(self.seed)
         for _ in range(self.n_estimators):
             p_hat = 1 / (1 + np.exp(-F))
@@ -47,16 +49,19 @@ class GradientBoostingBinary:
             idx = rng.choice(len(X), size=len(X), replace=True)
             tree.fit(X[idx], pseudo[idx])
             direction = np.where(tree.predict(X) == 1, 1.0, -1.0)
-            F = F + self.learning_rate * direction * np.abs(residual).mean()
+            step_scale = float(np.abs(residual).mean())
+            F = F + self.learning_rate * direction * step_scale
             self.trees_.append(tree)
+            self.step_scales_.append(step_scale)
         return self
 
     def decision_function(self, X: np.ndarray) -> np.ndarray:
         X = np.asarray(X, dtype=float)
         F = np.full(len(X), self.init_)
-        for tree in self.trees_:
+        # Replay the same per-tree step sizes that fit() used
+        for tree, step_scale in zip(self.trees_, self.step_scales_):
             direction = np.where(tree.predict(X) == 1, 1.0, -1.0)
-            F = F + self.learning_rate * direction
+            F = F + self.learning_rate * direction * step_scale
         return F
 
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
