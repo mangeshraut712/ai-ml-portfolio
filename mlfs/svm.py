@@ -15,8 +15,11 @@ class LinearSVM:
     def fit(self, X: np.ndarray, y: np.ndarray) -> "LinearSVM":
         X = np.asarray(X, dtype=float)
         y = np.asarray(y).reshape(-1)
-        # map {0,1} -> {-1,+1}
-        y = np.where(y <= 0, -1.0, 1.0)
+        self.classes_ = np.unique(y)
+        if self.classes_.size != 2:
+            raise ValueError("LinearSVM needs exactly two classes in y")
+        # map the lower label -> -1 and the higher label -> +1 (0/1 as before)
+        y = np.where(y == self.classes_[1], 1.0, -1.0)
         n, d = X.shape
         rng = np.random.default_rng(self.seed)
         self.w_ = np.zeros(d)
@@ -36,4 +39,4 @@ class LinearSVM:
         return np.asarray(X, dtype=float) @ self.w_ + self.b_
 
     def predict(self, X: np.ndarray) -> np.ndarray:
-        return (self.decision_function(X) >= 0).astype(int)
+        return self.classes_[(self.decision_function(X) >= 0).astype(int)]
