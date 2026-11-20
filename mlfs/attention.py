@@ -6,9 +6,14 @@ import numpy as np
 
 
 def softmax(x: np.ndarray, axis: int = -1) -> np.ndarray:
-    x = x - np.max(x, axis=axis, keepdims=True)
-    e = np.exp(x)
-    return e / e.sum(axis=axis, keepdims=True)
+    x = np.asarray(x, dtype=float)
+    # An all-(-inf) slice has max -inf, and subtracting it yields NaN.
+    axis_max = np.max(x, axis=axis, keepdims=True)
+    axis_max = np.where(np.isfinite(axis_max), axis_max, 0.0)
+    e = np.exp(x - axis_max)
+    e = np.where(np.isfinite(e), e, 0.0)
+    total = e.sum(axis=axis, keepdims=True)
+    return np.divide(e, total, out=np.zeros_like(e), where=total > 0)
 
 
 def scaled_dot_product_attention(
