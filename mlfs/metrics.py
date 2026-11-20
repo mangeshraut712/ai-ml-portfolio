@@ -21,6 +21,7 @@ def accuracy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
 
 
 def precision_recall_f1(y_true: np.ndarray, y_pred: np.ndarray) -> tuple[float, float, float]:
+    y_true, y_pred = _as_1d_pair(y_true, y_pred)
     tp = np.sum((y_pred == 1) & (y_true == 1))
     fp = np.sum((y_pred == 1) & (y_true == 0))
     fn = np.sum((y_pred == 0) & (y_true == 1))
