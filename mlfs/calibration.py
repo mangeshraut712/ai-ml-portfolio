@@ -20,6 +20,10 @@ def expected_calibration_error(
 ) -> float:
     y = np.asarray(y_true, dtype=float).reshape(-1)
     p = np.asarray(proba, dtype=float).reshape(-1)
+    if y.size == 0 or p.size == 0:
+        raise ValueError("y_true and proba must be non-empty")
+    if y.shape != p.shape:
+        raise ValueError(f"y_true and proba must have the same length, got {y.shape} and {p.shape}")
     bins = np.linspace(0.0, 1.0, n_bins + 1)
     ece = 0.0
     for i in range(n_bins):
