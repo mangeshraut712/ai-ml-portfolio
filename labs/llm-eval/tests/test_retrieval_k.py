@@ -20,3 +20,8 @@ def test_recall_and_ndcg_reject_non_positive_k() -> None:
         ndcg_at_k(relevant, retrieved, 0)
     assert recall_at_k(relevant, retrieved, 1) == 0.0
     assert recall_at_k(relevant, retrieved, 3) == 1.0
+
+
+def test_ndcg_ignores_duplicate_retrieved_docs() -> None:
+    assert ndcg_at_k(["a"], ["a", "a"], 2) == 1.0
+    assert ndcg_at_k(["a", "b"], ["a", "a", "b"], 3) <= 1.0

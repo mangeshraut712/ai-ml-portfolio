@@ -7,13 +7,14 @@ import numpy as np
 
 class StandardScaler:
     def fit(self, X: np.ndarray) -> "StandardScaler":
+        X = np.asarray(X, dtype=float)
         self.mean_ = X.mean(axis=0)
         self.scale_ = X.std(axis=0)
         self.scale_[self.scale_ == 0] = 1.0
         return self
 
     def transform(self, X: np.ndarray) -> np.ndarray:
-        return (X - self.mean_) / self.scale_
+        return (np.asarray(X, dtype=float) - self.mean_) / self.scale_
 
     def fit_transform(self, X: np.ndarray) -> np.ndarray:
         return self.fit(X).transform(X)
@@ -21,6 +22,7 @@ class StandardScaler:
 
 class MinMaxScaler:
     def fit(self, X: np.ndarray) -> "MinMaxScaler":
+        X = np.asarray(X, dtype=float)
         self.min_ = X.min(axis=0)
         self.max_ = X.max(axis=0)
         self.range_ = self.max_ - self.min_
@@ -28,7 +30,7 @@ class MinMaxScaler:
         return self
 
     def transform(self, X: np.ndarray) -> np.ndarray:
-        return (X - self.min_) / self.range_
+        return (np.asarray(X, dtype=float) - self.min_) / self.range_
 
     def fit_transform(self, X: np.ndarray) -> np.ndarray:
         return self.fit(X).transform(X)
