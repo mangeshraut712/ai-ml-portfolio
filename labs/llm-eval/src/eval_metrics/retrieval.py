@@ -29,8 +29,11 @@ def ndcg_at_k(relevant: Sequence[str], retrieved: Sequence[str], k: int) -> floa
         raise ValueError(f"k must be a positive integer, got {k}")
     rel = set(relevant)
     dcg = 0.0
+    seen: set[str] = set()
     for i, doc_id in enumerate(retrieved[:k], start=1):
-        gain = 1.0 if doc_id in rel else 0.0
+        # A repeated doc must not earn gain twice, or nDCG can exceed 1.
+        gain = 1.0 if doc_id in rel and doc_id not in seen else 0.0
+        seen.add(doc_id)
         dcg += gain / math.log2(i + 1)
     ideal_hits = min(len(rel), k)
     idcg = sum(1.0 / math.log2(i + 1) for i in range(1, ideal_hits + 1))

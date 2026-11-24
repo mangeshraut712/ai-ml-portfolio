@@ -29,7 +29,7 @@ class GaussianNB:
         X = np.asarray(X, dtype=float)
         preds = []
         for x in X:
-            best_c, best_score = None, -1e18
+            best_c, best_score = None, -np.inf
             for c in self.classes_:
                 score = np.log(self.priors_[c]) + self._log_gauss(
                     x, self.mean_[c], self.var_[c]
