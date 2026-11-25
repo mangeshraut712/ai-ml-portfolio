@@ -11,7 +11,7 @@
 **Home:** this README (GitHub). **Interactive UIs (local):** `make run-vad-ui` · `make run-llm-eval-ui`. No hosted Streamlit/Vercel app — clone and run.
 
 > **Proof (CI-verified)** — [CI](https://github.com/mangeshraut712/ai-ml-portfolio/actions/workflows/ci.yml) · Python **3.10–3.12** matrix green · `make verify-all` / `make verify-vad-pass` → **FULL_PASS**  
-> VAD: exact clean F1 **0.9569** · noisy **0.7768** · soft **0.8135** · p95 ~**19 ms** · sample_001 **258/258**  
+> VAD: exact clean F1 **0.9538** · noisy **0.7739** · soft **0.8135** · p95 ~**19 ms** · sample_001 **258/258**  
 > LLM eval: [`DATA_CARD.md`](labs/llm-eval/DATA_CARD.md) · [`RESULTS.md`](labs/llm-eval/RESULTS.md) (stub baseline in CI; live optional)
 
 | Lab | Prove in 60s | Signal |
@@ -117,8 +117,8 @@ Spectral-gate denoiser → WebRTC GMM (aggressiveness 2) → hangover. No extern
 
 | Metric | Measured |
 |---|---:|
-| Exact clean mean F1 | **0.9569** |
-| Exact noisy mean F1 | **0.7768** |
+| Exact clean mean F1 | **0.9538** |
+| Exact noisy mean F1 | **0.7739** |
 | Soft mean F1 | **0.8135** |
 | Steady p95 latency | **~19 ms** |
 | sample_001 frames | **258/258** |

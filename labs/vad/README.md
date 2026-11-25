@@ -113,7 +113,7 @@ make verify-vad-pass    # single acceptance gate → FULL_PASS / FAIL
 
 | Dimension | Evidence |
 |---|---|
-| Accuracy | Exact clean F1 ≈ **0.96**; noisy F1 ≥ 0.75; soft F1 ≥ 0.78 |
+| Accuracy | Exact clean F1 ≈ **0.95**; noisy F1 ≥ 0.75; soft F1 ≥ 0.78 |
 | Completeness | Every expected frame classified (e.g. **258/258** on sample_001) |
 | Latency | Steady p95 ≈ **19 ms**, RTF ≈ **0.002** |
 | Quality | Modular stages, hangover post-process, 9 pytest cases |

@@ -25,10 +25,10 @@ make verify-vad-pass
 
 | Gate | Result |
 |---|---|
-| Exact clean mean F1 | **0.9569** ≥ 0.92 |
-| Exact clean mean accuracy | **0.9451** ≥ 0.90 |
-| Exact clean min F1 | **0.9558** ≥ 0.90 |
-| Exact noisy mean F1 | **0.7768** ≥ 0.75 |
+| Exact clean mean F1 | **0.9538** ≥ 0.92 |
+| Exact clean mean accuracy | **0.9414** ≥ 0.90 |
+| Exact clean min F1 | **0.9527** ≥ 0.90 |
+| Exact noisy mean F1 | **0.7739** ≥ 0.75 |
 | Soft (energy-ref) mean F1 | **0.8135** ≥ 0.78 |
 | Batch files | **50**/50 |
 | Steady p95 latency | **~19 ms** ≤ 100 ms |

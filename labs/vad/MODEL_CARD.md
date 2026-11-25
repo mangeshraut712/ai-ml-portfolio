@@ -45,9 +45,9 @@ Gate thresholds are fixed in `challenge_pass.py` (`GATES`). All rows are frame-l
 
 | Split | Measured | Gate | Status |
 | --- | ---: | ---: | --- |
-| Exact, clean — mean F1 | **0.9569** | ≥ 0.92 | pass |
+| Exact, clean — mean F1 | **0.9538** | ≥ 0.92 | pass |
 | Exact, clean — min per-file F1 | see gate report | ≥ 0.90 | pass |
-| Exact, noisy (5–15 dB SNR) — mean F1 | **0.7768** | ≥ 0.75 | pass, narrow margin |
+| Exact, noisy (5–15 dB SNR) — mean F1 | **0.7739** | ≥ 0.75 | pass, narrow margin |
 | Soft (energy reference) — mean F1 | **0.8135** | ≥ 0.78 | pass |
 | Steady-state p95 latency per 30 ms frame | **~19 ms** | < 30 ms (real time) | pass |
 | `sample_001.wav` frames processed | **258/258** | complete | pass |
@@ -60,11 +60,11 @@ than the exact split by construction.
 
 ## Known limitations and failure modes
 
-1. **Noise is the failure mode.** Mean F1 drops from 0.9569 (clean) to
-   0.7768 on the 5–15 dB white-noise clips, with only 0.027 headroom over
+1. **Noise is the failure mode.** Mean F1 drops from 0.9538 (clean) to
+   0.7739 on the 5–15 dB white-noise clips, with only 0.024 headroom over
    the gate. The spectral gate cannot separate speech from noise bins near
    the estimated floor, and the GMM misses low-SNR speech onsets. Expect
-   worse than 0.7768 on real non-stationary noise (traffic, babble), which
+   worse than 0.7739 on real non-stationary noise (traffic, babble), which
    the synthetic split does not contain.
 2. **Synthetic exact labels.** Exact frame labels come from silence + speech
    concatenation, not from human annotation of natural recordings.
