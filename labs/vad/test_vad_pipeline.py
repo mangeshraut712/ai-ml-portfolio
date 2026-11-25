@@ -145,3 +145,14 @@ def test_neural_vad_interface_matches_webrtc_grid():
     w_flags = webrtc.detect_speech(audio, sr, frame_duration_ms=30, hangover=True)
     assert len(n_flags) == len(w_flags)
     assert n_flags.dtype == np.int8 or n_flags.dtype == w_flags.dtype
+
+
+def test_missing_ground_truth_hint_points_at_real_script(tmp_path, monkeypatch, capsys):
+    import evaluate_against_labels
+
+    missing = tmp_path / "ground_truth.json"
+    argv = ["evaluate_against_labels.py", "--ground-truth", str(missing)]
+    monkeypatch.setattr(sys, "argv", argv)
+    assert evaluate_against_labels.main() == 1
+    hint = capsys.readouterr().err.split("Run: python ", 1)[1].strip()
+    assert (REPO_ROOT / hint).is_file(), hint

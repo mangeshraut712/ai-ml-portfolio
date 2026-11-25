@@ -81,7 +81,7 @@ def main() -> int:
     if not args.ground_truth.exists():
         print(
             f"Missing {args.ground_truth}. Run: "
-            "python examples/sarvam-vad-challenge/build_labeled_benchmark.py",
+            "python labs/vad/build_labeled_benchmark.py",
             file=sys.stderr,
         )
         return 1
