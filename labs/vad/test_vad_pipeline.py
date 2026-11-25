@@ -86,6 +86,18 @@ def test_segments_roundtrip():
     assert flags[0] == 0
 
 
+def test_segments_to_flags_boundary_aligned_end_does_not_spill():
+    # Frame 30 covers [0.90, 0.93) s and lies outside [0.0, 0.9);
+    # 0.9 / 0.03 == 30.000000000000004 in float64.
+    flags = segments_to_flags([(0.0, 0.9)], n_frames=40, frame_duration_ms=30)
+    assert flags[:30].tolist() == [1] * 30
+    assert flags[30] == 0
+    # The shipped synthetic clips end their last segment at 7.2 s (frame 240).
+    flags = segments_to_flags([(6.0, 7.2)], n_frames=250, frame_duration_ms=30)
+    assert flags.sum() == 40
+    assert flags[200] == 1 and flags[239] == 1 and flags[240] == 0
+
+
 def test_energy_reference_flags_shape():
     sr = 16000
     audio = np.zeros(sr * 2, dtype=np.float32)

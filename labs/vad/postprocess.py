@@ -97,8 +97,12 @@ def segments_to_flags(
     """Rasterize second-based segments onto a fixed frame grid."""
     flags = np.zeros(n_frames, dtype=np.int8)
     frame_sec = frame_duration_ms / 1000.0
+    # Float tolerance: 0.9 / 0.03 == 30.000000000000004 in float64, so a bare
+    # ceil() spills one frame past a boundary-aligned segment end (and a bare
+    # int() can drop the first overlapping frame on the other side).
+    eps = 1e-9
     for start, end in segments:
-        i0 = max(0, int(start / frame_sec))
-        i1 = min(n_frames, int(np.ceil(end / frame_sec)))
+        i0 = max(0, int(np.floor(start / frame_sec + eps)))
+        i1 = min(n_frames, int(np.ceil(end / frame_sec - eps)))
         flags[i0:i1] = 1
     return flags
